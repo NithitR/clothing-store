@@ -4,6 +4,7 @@ import FormInput from "../form-input/form-input.component.jsx";
 import Button from "../button/button.component.jsx";
 
 import './sign-up-form.style.scss'
+import {UserContext} from "../../contexts/user.context.jsx";
 
 
 const defaultFormFields = {
@@ -17,7 +18,8 @@ const SignUpForm = () => {
     const [formFields, setFormState] = useState(defaultFormFields)
     const {displayName, email, password, confirmPassword} = formFields;
 
-    const restFormFields = ()=>{
+
+    const resetFormFields = ()=>{
         setFormState(defaultFormFields);
     }
 
@@ -28,7 +30,7 @@ const SignUpForm = () => {
             try {
                 let {user} = await createFirebaseUserWithEmailAndPassword(formFields);
                 await createUserDocumentFromAuth(user,{displayName});
-                restFormFields();
+                resetFormFields();
             } catch (e) {
                 if(e.code === 'auth/email-already-in-use') {
                     alert(`Email already in use!`);

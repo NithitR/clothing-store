@@ -17,26 +17,20 @@ const SignIn = () =>{
     const [formFields, setFormState] = useState(defaultFormFields)
     const { email, password} = formFields;
 
-    const restFormFields = ()=>{
-        setFormState(defaultFormFields);
-    }
-
     const handleChange = (event) => {
         const {name, value} = event.target;
         setFormState({...formFields, [name]: value});
     }
     const logOnGoogleUser = async ()=>{
-        const response = await signInWithGooglePopup();
-        console.log("Logged in...",response);
-        await createUserDocumentFromAuth(response.user);
-    }
+         await signInWithGooglePopup();
 
+    }
     const handleSubmit = async (e)=>{
         try {
             e.preventDefault();
-            let creds = await authenticateWithEmailAndPassword(formFields);
-            console.log(creds);
-            alert('sign in successful')
+            let {user} = await authenticateWithEmailAndPassword(formFields);
+            console.log(user);
+            alert('sign in successful');
             // const response = await signInWithGooglePopup();
             // console.log("Logged in...",response);
             // await createUserDocumentFromAuth(response);
@@ -61,9 +55,9 @@ const SignIn = () =>{
 
     return (
         <div className="sign-up-container">
-            <h2>Don't have an account?</h2>
+            <h2>Already have an account?</h2>
             <span>
-                Sign up with your email and password
+                Sign in
             </span>
             <form onSubmit={handleSubmit}>
             <FormInput label="email" type="email" name="email" value={email} onChange={handleChange} required/>
